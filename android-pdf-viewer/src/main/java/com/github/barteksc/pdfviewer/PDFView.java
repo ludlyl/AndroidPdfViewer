@@ -757,6 +757,13 @@ public class PDFView extends RelativeLayout {
 
         this.pdfFile = pdfFile;
 
+        // Bufix for rendering handler thread sometimes being null
+        // (onDetachedFromWindow is being run but not always onAttachedToWindow...?)
+        // Should probably be solved some other, better, way. Unclear if this can create problems if the renderingHandlerThread is created again by onAttachedToWindow.
+        if (renderingHandlerThread == null) {
+            renderingHandlerThread = new HandlerThread("PDF renderer");
+        }
+
         if (!renderingHandlerThread.isAlive()) {
             renderingHandlerThread.start();
         }
