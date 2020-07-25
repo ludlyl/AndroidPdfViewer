@@ -463,7 +463,11 @@ public class PDFView extends RelativeLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        renderingHandlerThread = new HandlerThread("PDF renderer");
+        if (renderingHandlerThread == null) {
+            renderingHandlerThread = new HandlerThread("PDF renderer");
+        } else {
+            Log.e("PDFView", "renderingHandlerThread was not null in onAttachedToWindow. It's probably created in onComplete first. This is a bug!");
+        }
     }
 
     @Override
